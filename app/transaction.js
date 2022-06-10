@@ -1,7 +1,7 @@
 import buildConfirmations from './confirmations';
 import './transaction.css';
 
-export default function build({ id, attributes, confirmations }, pending) {
+export default function build({ id, attributes, confirmations }, activeTab) {
   const { value, executed, destination } = attributes;
   return `
     <div class="transaction">
@@ -19,7 +19,7 @@ export default function build({ id, attributes, confirmations }, pending) {
       </div>
       ${buildConfirmations(confirmations)}
       ${
-        pending
+        activeTab == 'pending'
           ? `<div class="actions">
         <div id="confirm-${id}" class="button"> Confirm Transaction </div>
       </div>`

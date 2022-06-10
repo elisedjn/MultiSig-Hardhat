@@ -4,7 +4,7 @@ import MultiSig from './artifacts/contracts/MultiSig.sol/MultiSig.json';
 import { address } from './__config';
 import { ethers } from 'ethers';
 
-export let showPending = true;
+export let activeTab = 'pending';
 
 export default async function setupEvents() {
   const provider = new ethers.providers.Web3Provider(ethereum);
@@ -13,19 +13,19 @@ export default async function setupEvents() {
   const signer = provider.getSigner();
   const contract = new ethers.Contract(address, MultiSig.abi, signer);
 
-  populateTransactions(showPending);
+  populateTransactions(activeTab);
   populateInfo();
 
   const code = await provider.getCode(address);
   if (code !== '0x') {
     contract.on('Confirmation', () => {
-      populateTransactions(showPending);
+      populateTransactions(activeTab);
     });
     contract.on('Submission', () => {
-      populateTransactions(showPending);
+      populateTransactions(activeTab);
     });
     contract.on('Execution', () => {
-      populateTransactions(showPending);
+      populateTransactions(activeTab);
       populateInfo();
     });
     contract.on('Deposit', () => {
