@@ -1,8 +1,10 @@
-import populateTransactions from "./populateTransactions";
-import populateInfo from "./populateInfo";
+import populateTransactions from './populateTransactions';
+import populateInfo from './populateInfo';
 import MultiSig from './artifacts/contracts/MultiSig.sol/MultiSig.json';
-import {address} from './__config';
-import {ethers} from 'ethers';
+import { address } from './__config';
+import { ethers } from 'ethers';
+
+export let showPending = true;
 
 export default async function setupEvents() {
   const provider = new ethers.providers.Web3Provider(ethereum);
@@ -11,19 +13,19 @@ export default async function setupEvents() {
   const signer = provider.getSigner();
   const contract = new ethers.Contract(address, MultiSig.abi, signer);
 
-  populateTransactions();
+  populateTransactions(showPending);
   populateInfo();
 
   const code = await provider.getCode(address);
-  if(code !== "0x") {
+  if (code !== '0x') {
     contract.on('Confirmation', () => {
-      populateTransactions();
+      populateTransactions(showPending);
     });
     contract.on('Submission', () => {
-      populateTransactions();
+      populateTransactions(showPending);
     });
     contract.on('Execution', () => {
-      populateTransactions();
+      populateTransactions(showPending);
       populateInfo();
     });
     contract.on('Deposit', () => {
