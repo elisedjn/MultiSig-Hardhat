@@ -3,13 +3,14 @@ describe('MultiSig', function () {
   let contract;
   let accounts;
   let _required = 2;
+  let _minutes = 5;
 
   describe('Confirmed Tests', function () {
     let signer;
     beforeEach(async () => {
       accounts = await ethers.provider.listAccounts();
       const MultiSig = await ethers.getContractFactory('MultiSig');
-      contract = await MultiSig.deploy(accounts.slice(0, 3), _required);
+      contract = await MultiSig.deploy(accounts.slice(0, 3), _required, _minutes);
       await contract.deployed();
       signer1 = ethers.provider.getSigner(accounts[1]);
     });

@@ -8,7 +8,7 @@ describe('MultiSig', function () {
   beforeEach(async () => {
     accounts = await ethers.provider.listAccounts();
     const MultiSig = await ethers.getContractFactory('MultiSig');
-    contract = await MultiSig.deploy(accounts.slice(0, 3), _required);
+    contract = await MultiSig.deploy(accounts.slice(0, 3), _required, 5);
     await contract.deployed();
     signer1 = ethers.provider.getSigner(accounts[1]);
     beforeBalance = await ethers.provider.getBalance(accounts[2]);
@@ -71,17 +71,17 @@ describe('MultiSig', function () {
     });
 
     it('should return the count of pending transactions', async function () {
-      const count = await contract.getTransactionCount(true, false);
+      const count = await contract.getTransactionCount(true, false, false);
       assert.equal(count.toNumber(), 3);
     });
 
     it('should return the count of executed transactions', async function () {
-      const count = await contract.getTransactionCount(false, true);
+      const count = await contract.getTransactionCount(false, true, false);
       assert.equal(count.toNumber(), 1);
     });
 
     it('should return the count of both', async function () {
-      const count = await contract.getTransactionCount(true, true);
+      const count = await contract.getTransactionCount(true, true, false);
       assert.equal(count.toNumber(), 4);
     });
   });
@@ -103,17 +103,17 @@ describe('MultiSig', function () {
     });
 
     it('should return a list of pending transactions', async function () {
-      const arr = await contract.getTransactionIds(true, false);
+      const arr = await contract.getTransactionIds(true, false, false);
       assert.equal(arr.length, 3);
     });
 
     it('should return a list of executed transactions', async function () {
-      const arr = await contract.getTransactionIds(false, true);
+      const arr = await contract.getTransactionIds(false, true, false);
       assert.equal(arr.length, 1);
     });
 
     it('should return a list of both', async function () {
-      const arr = await contract.getTransactionIds(true, true);
+      const arr = await contract.getTransactionIds(true, true, false);
       assert.equal(arr.length, 4);
     });
   });
@@ -122,7 +122,7 @@ describe('MultiSig', function () {
     beforeEach(async () => {
       accounts = await ethers.provider.listAccounts();
       const MultiSig = await ethers.getContractFactory('MultiSig');
-      contract = await MultiSig.deploy(accounts.slice(0, 3), _required);
+      contract = await MultiSig.deploy(accounts.slice(0, 3), _required, 5);
       await contract.deployed();
       signer1 = ethers.provider.getSigner(accounts[1]);
     });

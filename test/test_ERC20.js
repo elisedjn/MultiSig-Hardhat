@@ -5,7 +5,7 @@ describe('MultiSig', function () {
   beforeEach(async () => {
     accounts = await ethers.provider.listAccounts();
     const MultiSig = await ethers.getContractFactory('MultiSig');
-    contract = await MultiSig.deploy(accounts.slice(0, 3), 1);
+    contract = await MultiSig.deploy(accounts.slice(0, 3), 1, 5);
     await contract.deployed();
   });
 
